@@ -182,7 +182,7 @@ add_definitions(-DRESOURCES="${RESOURCES_DIR}")
 
 add_subdirectory(libaditof)
 add_subdirectory(apps)
-
+add_subdirectory(tests)
 
 if (WITH_EXAMPLES)
         add_subdirectory(examples)
