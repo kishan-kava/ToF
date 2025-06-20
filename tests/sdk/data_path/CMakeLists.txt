@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project(adsd3500_test_utility)
+project(data_path)
 
 add_executable(${PROJECT_NAME} main.cpp)
 

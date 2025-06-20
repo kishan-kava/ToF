@@ -406,7 +406,7 @@ int main(int argc, char *argv[]) {
 
         status = camera->setMode(mode);
         if (status != Status::OK) {
-            LOG(ERROR) << "Could not set camera mode!";
+	    LOG(ERROR) << "@@,"<< argv[0] << ",FAIL," << "LN " << __line__ << " Could not set camera mode!";
             return 0;
         }
 
@@ -433,13 +433,14 @@ int main(int argc, char *argv[]) {
             status = camera->saveModuleCCB(ccbFilePath);
             if (status != Status::OK) {
                 LOG(INFO) << "Failed to store CCB to " << ccbFilePath;
+
             }
         }
 
         // Program the camera with cfg passed, set the mode by writing to 0x200 and start the camera
         status = camera->start();
         if (status != Status::OK) {
-            LOG(ERROR) << "Could not start camera!";
+	    LOG(ERROR) << "@@,"<< argv[0] << ",FAIL," << "LN " << __line__ << " Could not start camera!";
             return 0;
         }
 
@@ -456,7 +457,7 @@ int main(int argc, char *argv[]) {
         //drop first frame
         status = camera->requestFrame(&frame);
         if (status != Status::OK) {
-            LOG(ERROR) << "Could not request frame!";
+            LOG(ERROR) << "@@,"<< argv[0] << ",FAIL," << "LN " << __line__ << " Could not request frame!";
             return 0;
         }
 
@@ -467,13 +468,14 @@ int main(int argc, char *argv[]) {
             LOG(INFO) << "Capturing frames for " << capture_time_minutes << " minutes in mode " << current_mode << "!";
             auto capture_duration = std::chrono::duration<double>(capture_time_minutes * 60.0);
             while (std::chrono::high_resolution_clock::now() - start_time < capture_duration) {
-                if ((frame_count % 50) == 0) {
+
+                if ((frame_count % 100) == 0) {
                     LOG(INFO) << __func__ << ": framecount: " << frame_count;
                 }
 
                 status = camera->requestFrame(&frame);
                 if (status != Status::OK) {
-                    LOG(ERROR) << "Could not request frame!";
+                    LOG(ERROR) << "@@,"<< argv[0] << ",FAIL," << "LN " << __line__ << " Could not request frame!";
                     return 0;
                 }
                 if (useNetLinkTest) {
@@ -502,7 +504,7 @@ int main(int argc, char *argv[]) {
 
                 status = camera->requestFrame(&frame);
                 if (status != Status::OK) {
-                    LOG(ERROR) << "Could not request frame!";
+                    LOG(ERROR) << "@@,"<< argv[0] << ",FAIL," << "LN " << __line__ << " Could not request frame!";
                     return 0;
                 }
                 if (useNetLinkTest) {
@@ -522,12 +524,12 @@ int main(int argc, char *argv[]) {
         std::chrono::duration<double> total_time = end_time - start_time;
         if (total_time.count() > 0.0) {
             double measured_fps = (double)n_frames / total_time.count();
-            LOG(INFO) << "Measured FPS: " << measured_fps;
+            LOG(INFO) << "@@,"<< argv[0] << ",PASS, " << "LN" << __line__ << " Measured FPS: " << measured_fps;
         }
 
         status = camera->stop();
         if (status != Status::OK) {
-            LOG(INFO) << "Error stopping camera!";
+            LOG(ERROR) << "@@,"<< argv[0] << ",FAIL," << "LN " << __line__ << " Error stopping camera!";
         }
 
         LOG(INFO) << "--------------------------------------------------------------------";
